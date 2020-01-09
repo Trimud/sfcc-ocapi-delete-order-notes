@@ -5,7 +5,7 @@ const Request = require('request'),
     client_id = process.env.CLIENT_ID,
     credentials = process.env.SF_USER+':'+process.env.SF_PASS+':'+process.env.CLIENT_PASS,
     host = process.env.INSTANCE,
-    shopAPI = 's/LSS/dw/shop/v18_2',
+    shopAPI = process.env.NODE_ENV === 'production' ? 'dw/shop/v18_2' : 's/LSS/dw/shop/v18_2',
     authURL = `${host}/dw/oauth2/access_token?client_id=${client_id}&grant_type=urn:demandware:params:oauth:grant-type:client-id:dwsid:dwsecuretoken`,
     buff = Buffer.from(credentials),
     credentialsBase64Encoded = buff.toString('base64');

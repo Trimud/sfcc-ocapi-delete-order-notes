@@ -32,8 +32,6 @@ const getAccessToken = () => {
     });
 }
 
-getAccessToken();
-
 const parseCSV = () => {
     fs.createReadStream('orders.csv')
         .pipe(csv())
@@ -104,7 +102,9 @@ const deleteOrderNote = async (orderID, notesArray) => {
                 .then((body) => {
                     console.log(`Note ID ${noteID} for order ${orderID} has been deleted.`);
                 })
-                .catch((error) => {console.dir(error)});
+                .catch((error) => {
+                    console.dir('Error Delete Note: '+JSON.parse(error).body)
+                });
 
             await deleteOrderResponse;
         }
@@ -113,3 +113,5 @@ const deleteOrderNote = async (orderID, notesArray) => {
     // Run loop synchronously
     await Promise.all(promises);
 }
+
+getAccessToken();

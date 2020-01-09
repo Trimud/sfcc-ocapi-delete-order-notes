@@ -104,7 +104,7 @@ const deleteOrderNote = async (orderID, notesArray) => {
             }
             await rp(options)
                 .then((body) => {
-                    console.log(`Note ID ${noteID} for order ${orderID} has been deleted.`);
+                    // console.log(`Note ID ${noteID} for order ${orderID} has been deleted.`);
                 })
                 .catch((error) => {
                     console.log('Error deleting note: '+JSON.parse(error).body)

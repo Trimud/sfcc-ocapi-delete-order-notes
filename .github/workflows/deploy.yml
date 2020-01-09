@@ -17,3 +17,9 @@ jobs:
         run: |
           npm i
           npm run start
+        env:
+          CLIENT_ID: ${{secrets.CLIENT_ID}}
+          SF_USER: ${{secrets.SF_USER}}
+          SF_PASS: ${{secrets.SF_PASS}}
+          CLIENT_PASS: ${{secrets.CLIENT_PASS}}
+          INSTANCE: ${{secrets.INSTANCE}}

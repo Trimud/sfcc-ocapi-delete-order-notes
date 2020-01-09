@@ -1,0 +1,19 @@
+name: Deploy
+on: ['deployment']
+
+jobs:
+  run:
+    name: Run script
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: "Setup NodeJS"
+        uses: "actions/setup-node@v1"
+        with:
+          node-version: "10.x"
+      - name: Compile JS and SCSS
+        run: |
+          npm i
+          npm run start

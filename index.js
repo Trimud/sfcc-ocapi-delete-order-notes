@@ -33,13 +33,20 @@ const getAccessToken = () => {
 }
 
 const parseCSV = () => {
+    let arr = [];
     fs.createReadStream('orders.csv')
         .pipe(csv())
         .on('data', (data) => {
-            retrieveOrderNotes(data.order);
+            arr.push(data.order);
         })
         .on('error', (error) => {
             console.log(`Error reading CSV file: ${error}`);
+        })
+        .on('end', async () => {
+            for (const [i, orderID] of arr.entries()) {
+                console.log(i, orderID);
+                await retrieveOrderNotes(orderID);
+            }
         });
 }
 
@@ -55,19 +62,17 @@ const retrieveOrderNotes = async (orderID) => {
             'Authorization': `Bearer ${accessToken}`
         }
     }
-    const deleteOrderNoteResponse = rp(options)
-        .then((body) => {
-            // console.log(body);
+
+    await rp(options)
+        .then(async (body) => {
             let notesArray = JSON.parse(body);
             if ('notes' in notesArray) {
                 notesArray = notesArray.notes;
-                deleteOrderNote(orderID, notesArray);
+                await deleteOrderNote(orderID, notesArray);
             }
         }).catch((error) => {
-            console.dir(error);
+            console.log(error);
         });
-
-    await deleteOrderNoteResponse;
 }
 
 /**
@@ -75,7 +80,6 @@ const retrieveOrderNotes = async (orderID) => {
  * @param {String} orderID
  */
 const deleteOrderNote = async (orderID, notesArray) => {
-    var promises = [];
     for (const [i, note] of notesArray.entries()) {
         let now = new Date().getTime(),
             diff = now-tokenTimeStamp;
@@ -98,20 +102,15 @@ const deleteOrderNote = async (orderID, notesArray) => {
                     'Content-Type': 'application/json'
                 }
             }
-            const deleteOrderResponse = rp(options)
+            await rp(options)
                 .then((body) => {
                     console.log(`Note ID ${noteID} for order ${orderID} has been deleted.`);
                 })
                 .catch((error) => {
-                    console.dir('Error Delete Note: '+JSON.parse(error).body)
+                    console.log('Error deleting note: '+JSON.parse(error).body)
                 });
-
-            await deleteOrderResponse;
         }
     }
-
-    // Run loop synchronously
-    await Promise.all(promises);
 }
 
 getAccessToken();

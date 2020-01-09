@@ -89,8 +89,8 @@ const deleteOrderNote = async (orderID, notesArray) => {
             getAccessToken();
         }
 
-        // Leave first 10 notes
-        if (i < 10) {
+        // Leave first 500 notes
+        if (i < 500) {
             continue;
         } else {
             const noteID = note.id;

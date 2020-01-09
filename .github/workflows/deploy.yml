@@ -13,10 +13,10 @@ jobs:
         uses: "actions/setup-node@v1"
         with:
           node-version: "10.x"
-      - name: Compile JS and SCSS
+      - name: Run Script
         run: |
           npm i
-          npm run start
+          npm run start-prod
         env:
           NODE_ENV: production
           CLIENT_ID: ${{secrets.CLIENT_ID}}

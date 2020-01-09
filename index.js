@@ -55,7 +55,8 @@ const parseCSV = () => {
  * @param {String} orderID
  */
 const retrieveOrderNotes = async (orderID) => {
-    const url = `${host}/${shopAPI}/orders/${orderID}/notes`
+    const url = `${host}/${shopAPI}/orders/${orderID}/notes`;
+    console.log(url);
     let options =  {
         uri: url,
         headers: {
